@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-COMMERCE</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        .sideBar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 300px;
+            background-color: #0d5574;
+            height: 100vh;
+        }
+
+        .sideBar h2 {
+            margin: 20px;
+            color: white;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .sideBar a {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 15px;
+            color: white;
+            margin: 20px;
+            text-decoration: none;
+        }
+
+        .PANELI {
+            margin-bottom: 20px;
+        }
+
+        .sideBar a:hover {
+            color: orange;
+        }
+
+
+        .renderContnent {
+            display: flex;
+            flex-direction: column;
+            margin-right: 500px;
+            width: 1000px;
+        }
+        .burgerMenu{
+            display: none;
+        }
+
+        @media (max-width: 412px) {
+            .sideBar {
+                width: 50px;
+            }
+
+            .sideBar h2,
+            .sideBar a {
+                font-size: 0;
+            }
+        }
+
+        @media (max-width: 412px) {
+            .sideBar {
+                display: none;
+            }
+
+            .burgerMenu {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            #burgerToggle {
+                background-color: #0d5574;
+                color: white;
+                font-size: 24px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #burgerLinks {
+                list-style: none;
+                padding: 0;
+                display: none;
+                /* Initially hidden */
+            }
+
+            #burgerLinks li {
+                margin: 10px 0;
+            }
+
+            #burgerLinks a {
+                text-decoration: none;
+                color: white;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                background-color: #0d5574;
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+
+            #burgerLinks a:hover {
+                color: orange;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="container" id="container">
+        <div class="sideBar" id="sideBar">
+            <h2>
+                DASHBOARD
+            </h2>
+            <ul>
+                <li class="PANELI">
+                    <a id="welcome">
+
+                    </a>
+                </li>
+                <li class="PANELI">
+                    <a href="#home">
+                        PANELI I KONTROLLIT
+                    </a>
+                </li>
+                <li class="PANELI">
+                    <a href="#about">
+                        PRODUKTET
+                    </a>
+                </li>
+                <li class="PANELI">
+                    <a href="http://127.0.0.1:5500/projeckt/basic-setup/src/login.html">
+                        SIGN OUT
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="burgerMenu" id="burgerMenu">
+            <button id="burgerToggle">☰</button>
+            <ul id="burgerLinks" class="hidden">
+                <li class="PANELI">
+                    <a id="welcome">
+
+                    </a>
+                </li>
+                <li><a href="#home">PANELI I KONTROLLIT</a></li>
+                <li><a href="#about">PRODUKTET</a></li>
+                <li><a href="http://127.0.0.1:5500/olsi/olsi/projeckt/basic-setup/src/login.html">SIGN OUT</a></li>
+            </ul>
+        </div>
+        <div id="app">
+
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const burgerToggle = document.getElementById('burgerToggle');
+            const burgerLinks = document.getElementById('burgerLinks');
+
+            burgerToggle.addEventListener('click', function () {
+                burgerLinks.classList.toggle('hidden');
+                if (burgerLinks.style.display === 'none' || burgerLinks.style.display === '') {
+                    burgerLinks.style.display = 'block';
+                } else {
+                    burgerLinks.style.display = 'none';
+                }
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('welcome').innerHTML = `Welcome ${username}`;
+            } else {
+                fetch('http://localhost:3004/users')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+
+                        const logedInUser = data.find(test => test.isLogedIn == true);
+                        console.log(logedInUser);
+                        document.getElementById('welcome').innerText = `Welcome "${logedInUser.username}"`;
+
+                        if (username) {
+                            console.log('inside');
+
+                            localStorage.setItem('username', username);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching username:', error));
+            }
+        });
+    </script>
+</body>
+
+</html>
